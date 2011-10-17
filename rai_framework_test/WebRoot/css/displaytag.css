@@ -1,0 +1,38 @@
+
+.distagtable{
+	border:1px solid #B0D2FF;
+	width: 100%;
+	align: center;
+	border-collapse:collapse; 
+    border-spacing:0; 
+}
+.distagtable th {
+	text-align: center;
+	height:25px;
+}
+.distagtable thead tr {	background: url(../images/thead.gif) repeat-x; color:#055196; height:25px;}
+.distagtable td {
+	text-align: center;
+	border-top:1px solid #DDECFE;
+	border-right:1px solid #E0E0E0;
+	line-height:22px; 
+	padding-left:8px;
+}
+
+.distagtable tr.odd {
+	background-color: #fff;
+}
+
+.distagtable tr.tableRowEven,tr.even {
+	background:#F5F5F5;
+}
+
+.pagebanner {
+	margin:10px 0 10px 0;
+	float:left;
+}
+
+.pagelinks{
+	margin:10px 0 10px 0;
+	float:right;
+}

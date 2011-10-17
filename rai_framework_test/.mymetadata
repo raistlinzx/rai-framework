@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project-module
+  type="WEB"
+  name="rai_framework_test"
+  id="myeclipse.1298518850732"
+  context-root="/rai_framework_test"
+  j2ee-spec="1.4"
+  archive="rai_framework_test.war">
+  <attributes>
+    <attribute name="webrootdir" value="WebRoot" />
+  </attributes>
+</project-module>
+

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+	
+	<!-- General Test -->
+	<bean id="generalManagerAbstract" class="com.rai.framework.service.common.GeneralManagerImpl" abstract="true" >
+		<property name="dao" ref="generalDAO" />
+	</bean>
+	
+	
+	<bean id="generalManager" class="com.rai.framework.service.common.GeneralManagerInstance" parent="generalManagerAbstract" />	
+	
+	<bean id="baseSessionFacade" class="com.rai.framework.service.common.BaseSessionFacadeImpl" abstract="true">
+		<property name="generalManager" ref="generalManager" />
+	</bean>
+</beans>

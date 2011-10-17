@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project default="package" basedir=".">
+	<property name="app.name" value="rai_framework" />
+	<property name="compile.deprecation" value="false" />
+	<property name="compile.optimize" value="true" />
+
+	<property name="src.path" value="${basedir}/src" />
+	<property name="lib.path" value="${basedir}/lib" />
+	<property name="build.path" value="${basedir}/build" />
+	<property name="build.basepath" value="${basedir}/doc" />
+	<property name="build.destfile" value="${basedir}/build/${app.name}_doc.jar" />
+	<path id="build.lib.path">
+		<fileset id="build.lib" dir="${lib.path}">
+			<include name="**/*.jar" />
+		</fileset>
+	</path>
+
+	<!-- Clean build directory.. -->
+	<target name="clean">		
+		<delete file="${build.destfile}" />
+		<echo>Clean doc directory..</echo>
+	</target>
+
+	<!-- Prepare a empty build directory -->
+	<target name="prepare" depends="clean">
+		<mkdir dir="${build.basepath}" />
+		<echo>Prepare a empty doc directory</echo>
+	</target>
+
+	<!-- Compile JAVA source files. -->
+	<target name="compile" depends="prepare">
+		<javadoc encoding="utf-8" charset="utf-8" sourcepath="${src.path}" destdir="${build.basepath}" verbose="no" failonerror="false">
+			<classpath refid="build.lib.path" />
+		</javadoc>
+		<echo>Compile JAVA Doc files.</echo>
+	</target>
+
+
+	<!-- Package -->
+	<target name="package" depends="compile">
+		<echo>Packaging</echo>
+		<jar destfile="${build.destfile}" basedir="${build.basepath}" />
+	</target>
+</project>

@@ -1,0 +1,71 @@
+RAI_FRAMEWORK
+用途:
+1.减少DAO，MANAGER的代码编写
+2.减少SQL语句的编写
+3.方便页面Form到对象的转换
+4.通过精简SQL和hibernate ehcache配合，可以做到对象缓存。配合Oracle的sql缓存，命中率很高
+5.新的查询思路，以对象为目标的查询。更便于理解的查询条件方法，摆脱修改大段SQL导致的效率降低。
+6.查询也支持SQL和HQL，不限制习惯。(但是依然推荐使用QueryModel)
+7.封装了常用的组件，如分页PageControl，Struts返回key等等
+8.可方便的实现EJB3版本的扩展
+
+
+主要类说明:
+1.QueryModel
+  用于组合查询条件，作为框架自动生成查询语句的依据
+
+2.ConditionModel
+  用来定义单个查询条件，可以实现像eq，ne，ge，le，like，isNull等等常用逻辑
+  
+3.GeneralManager
+  用于日常查询对象，支持分页查询PageControl
+  常用方法：
+    分页查询 find(QueryModel queryModel,PageControl pageControl)
+    对象查询 get(QueryModel queryModel)
+    count查询 count(QueryModel queryModel)
+    根据ID查询唯一对象 get(class,id)
+    根据某属性查询对象 get(class,keyname,id)
+    删除对象 deleteObject(object)
+    删除对象 deleteObject(class,id)
+
+4.BaseSessionFacade和BaseSessionFacadeImpl
+  实现GeneralManager注入接口
+  用户自定义的Facade可以直接继承他们，不需再声明GeneralManager
+  Spring配置时可以使用如下方法,也不需要注入声明
+    <bean name="orgFacade" class="com.rai.framework.test.sessionfacade.impl.OrgFacadeImpl" parent="baseSessionFacade" />
+     也可以继续使用平时习惯的方法，注入generalManager对象(此对象已声明在jar包的xml文件中)
+
+5.GeneralAction
+  用户自定义推荐继承GeneralAction
+  并且重新实现actionExecute方法
+    @Override
+	protected String actionExecute(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response)
+			throws Exception 
+  特点如下：
+  a. GeneralAction中已经注入GeneralManager，可以直接调用。
+  b. 定义了常用的返回值，如SUCCESS，REFERER，INPUT等等
+  c. 定义了saveReferer方法，可以保存前一页的连接，用于之后return REFERER返回。(REFERER需在struts配置文件中声明，请参照范例中的写法和jsp)
+  d. 提供提交Form复制属性到POJO类的方法 
+    /**
+	 * 从request.getParameterMap中获取值，转换为pojo对象
+	 * 
+	 * @param targetName
+	 *            目标类的短名称
+	 * @param target
+	 *            如已存在对象
+	 * @param request
+	 *            request
+	 * @return 返回转换好的对象
+	 */
+	protected Object getPojoFromRequestMap(String targetName, Object target, HttpServletRequest request)
+  e. 目标类的短名称需在Spring配置文件中声明，类似如下:
+    <bean id="classNameMap" class="java.util.HashMap">
+		<constructor-arg>
+			<map>
+				<entry key="org" value="com.rai.framework.test.model.Organization" />
+				<entry key="person" value="com.rai.framework.test.model.Person" />
+				<entry key="personMoveLog" value="com.rai.framework.test.model.PersonMoveLog" />
+			</map>
+		</constructor-arg>
+	</bean>

@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts-config PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 1.2//EN" "http://struts.apache.org/dtds/struts-config_1_2.dtd">
+
+<struts-config>
+	<data-sources />
+
+	<form-beans>
+
+	</form-beans>
+
+	<global-forwards>
+		<forward name="FAILURE" path="/common/failure.jsp" />
+		<forward name="REFERER" path="/common/referer.jsp" />
+		<forward name="LOGIN" path="/login.jsp" redirect="true" />
+		<forward name="INDEX" path="/index.jsp" redirect="true" />
+	</global-forwards>
+
+	<action-mappings>
+		<!-- 人员列表 -->
+		<action path="/admin/personList" type="com.rai.framework.test.web.action.admin.PersonListAction" scope="request">
+			<forward name="SUCCESS" path="/admin/personList.jsp" />
+		</action>
+		
+		<!-- 人员添加/修改 -->
+		<action path="/admin/person" type="com.rai.framework.test.web.action.admin.PersonAction" scope="request">
+			<forward name="SUCCESS" path="/admin/person.jsp" />
+		</action>
+		<!-- 人员保存 -->
+		<action path="/admin/personSave" type="com.rai.framework.test.web.action.admin.PersonSaveAction" scope="request" />
+		
+		
+		<!-- 机构列表 -->
+		<action path="/admin/orgList" type="com.rai.framework.test.web.action.admin.OrgListAction" scope="request">
+			<forward name="SUCCESS" path="/admin/orgList.jsp" />
+		</action>
+		<!-- 机构添加/修改 -->
+		<action path="/admin/org" type="com.rai.framework.test.web.action.admin.OrgAction" scope="request">
+			<forward name="SUCCESS" path="/admin/org.jsp" />
+		</action>
+		<!-- 机构保存 -->
+		<action path="/admin/orgSave" type="com.rai.framework.test.web.action.admin.OrgSaveAction" scope="request" />		
+		
+		
+		
+		<!-- 人员调动列表 -->
+		<action path="/admin/personMoveLogList" type="com.rai.framework.test.web.action.admin.PersonMoveLogListAction" scope="request">
+			<forward name="SUCCESS" path="/admin/personMoveLogList.jsp" />
+		</action>
+		<!-- 人员调动添加/修改 -->
+		<action path="/admin/personMoveLog" type="com.rai.framework.test.web.action.admin.PersonMoveLogAction" scope="request">
+			<forward name="SUCCESS" path="/admin/personMoveLog.jsp" />
+		</action>
+		<!-- 人员调动保存 -->
+		<action path="/admin/personMoveLogSave" type="com.rai.framework.test.web.action.admin.PersonMoveLogSaveAction" scope="request" />
+		
+		
+	</action-mappings>
+
+	<controller>
+		<set-property property="processorClass"
+			value="org.springframework.web.struts.AutowiringRequestProcessor" />
+	</controller>
+
+</struts-config>
+
