@@ -89,12 +89,14 @@ public class QueryModel implements Serializable {
 		this.orderedMap = orderedMap;
 	}
 
-	public void addOrder(String key, String value) {
+	public QueryModel addOrder(String key, String value) {
 		this.orderedMap.put(key, value);
+		return this;
 	}
 
-	public void addAll(List<ConditionModel> conditionModeList) {
+	public QueryModel addAll(List<ConditionModel> conditionModeList) {
 		this.conditionModeList.addAll(conditionModeList);
+		return this;
 	}
 
 	public void setAliasNames(OrderedMap aliasNames) {
@@ -110,8 +112,9 @@ public class QueryModel implements Serializable {
 	 * 
 	 * @param distinct
 	 */
-	public void setDistinct(boolean distinct) {
+	public QueryModel setDistinct(boolean distinct) {
 		this.distinct = distinct;
+		return this;
 	}
 
 	public boolean isDistinct() {
@@ -123,8 +126,9 @@ public class QueryModel implements Serializable {
 	 * 
 	 * @param join
 	 */
-	public void setJoin(JOIN join) {
+	public QueryModel setJoin(JOIN join) {
 		this.join = join;
+		return this;
 	}
 
 	public JOIN getJoin() {
@@ -132,8 +136,9 @@ public class QueryModel implements Serializable {
 	}
 
 	@Deprecated
-	public void setQueryModelList(List<QueryModel> queryModelList) {
+	public QueryModel setQueryModelList(List<QueryModel> queryModelList) {
 		this.queryModelList = queryModelList;
+		return this;
 	}
 
 	@Deprecated
@@ -142,24 +147,27 @@ public class QueryModel implements Serializable {
 	}
 	
 	@Deprecated
-	public void union(QueryModel queryModel)
+	public QueryModel union(QueryModel queryModel)
 	{
 		this.queryModelList.add(queryModel);
 		if(!UNION.NORMAL.equals(this.union))
 			this.union=UNION.NORMAL;
+		return this;
 	}
 	
 	@Deprecated
-	public void union(QueryModel queryModel,UNION union)
+	public QueryModel union(QueryModel queryModel,UNION union)
 	{
 		this.queryModelList.add(queryModel);
 		if(!this.union.equals(union))
 			this.union=union;
+		return this;
 	}
 
 	@Deprecated
-	public void setUnion(UNION union) {
+	public QueryModel setUnion(UNION union) {
 		this.union = union;
+		return this;
 	}
 
 	@Deprecated
@@ -167,16 +175,18 @@ public class QueryModel implements Serializable {
 		return union;
 	}
 
-	public void setSelect(String select) {
+	public QueryModel setSelect(String select) {
 		this.select = select;
+		return this;
 	}
 
 	public String getSelect() {
 		return select;
 	}
 
-	public void setGroupby(String groupby) {
+	public QueryModel setGroupby(String groupby) {
 		this.groupby = groupby;
+		return this;
 	}
 
 	public String getGroupby() {
