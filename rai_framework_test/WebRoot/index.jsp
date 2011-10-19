@@ -16,7 +16,7 @@
   </head>
   
   <body>
-    Welcome to Rai Framework Test.
+    Welcome to Rai Framework Test. 
     <hr/>
     <ul>
     	<li><a href="${ctx}/admin/orgList.do">机构管理</a></li>
