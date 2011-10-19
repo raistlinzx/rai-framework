@@ -60,7 +60,7 @@ public class OrgListAction extends GeneralAction {
 		// 生成查询条件queryModel
 		QueryModel queryModel = new QueryModel(Organization.class);
 		if (StringUtils.isNotBlank(parentId))
-			queryModel.add(ConditionModel.eq("parentOrg.id", parentId));
+			queryModel.add(ConditionModel.eq("[parentOrg.id]", parentId));
 		else
 			queryModel.add(ConditionModel.isNull("[parentOrg.id]"));
 //		queryModel.addOrder("idx", "ASC");
