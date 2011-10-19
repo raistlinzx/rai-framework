@@ -35,8 +35,6 @@
 		| <a href="${ctx}/admin/orgSave.do?cmd=delete&id=${row.id}">删除</a>
 	</display:column>
 </display:table>
-<hr/>
-<display:table  name="list"/>
 
 </body>
 </html>
