@@ -3,7 +3,6 @@
 	<classpathentry kind="src" path="web"/>
 	<classpathentry kind="src" path="model"/>
 	<classpathentry kind="src" path="service"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="lib/commons-beanutils.jar"/>
 	<classpathentry kind="lib" path="lib/commons-collections-3.1.jar"/>
 	<classpathentry kind="lib" path="lib/commons-lang.jar"/>
@@ -41,5 +40,6 @@
 	<classpathentry kind="con" path="melibrary.com.genuitec.eclipse.j2eedt.core.MYECLIPSE_JAVAEE_5_CONTAINER"/>
 	<classpathentry kind="lib" path="lib/rai_framework.jar" sourcepath="/rai_framework/src"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/rai_framework"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="output" path="WebRoot/WEB-INF/classes"/>
 </classpath>
