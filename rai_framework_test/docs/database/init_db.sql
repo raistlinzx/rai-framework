@@ -1,111 +1,82 @@
 /*==============================================================*/
-/* DBMS name:      ORACLE Version 10gR2                         */
-/* Created on:     2011/2/24 15:27:11                           */
+/* DBMS name:      MySQL 5.0                                    */
+/* Created on:     2011/10/21 15:36:05                          */
 /*==============================================================*/
 
 
-alter table PERSON
-   drop constraint FK_PERSON_REFERENCE_ORGANIZA;
+drop table if exists CODER;
 
-alter table PERSON_MOVE_LOG
-   drop constraint FK_PERSON_M_REFERENCE_PERSON;
+drop table if exists ORGANIZATION;
 
-alter table PERSON_MOVE_LOG
-   drop constraint FK_PERSON_M_REFERENCE_ORGANIZA;
+drop table if exists PERSON;
 
-drop table CODER cascade constraints;
-
-drop table ORGANIZATION cascade constraints;
-
-drop table PERSON cascade constraints;
-
-drop table PERSON_MOVE_LOG cascade constraints;
-
-drop sequence MOVE_LOG_SEQ;
-
-drop sequence PERSON_SEQ;
-
-create sequence MOVE_LOG_SEQ;
-
-create sequence PERSON_SEQ;
+drop table if exists PERSON_MOVE_LOG;
 
 /*==============================================================*/
 /* Table: CODER                                                 */
 /*==============================================================*/
-create table CODER  (
-   ID                   VARCHAR2(50)                    not null,
-   VERSION              INT                             not null,
-   NEXTINDEX            INT                             not null,
-   TABLE_NAME           VARCHAR2(50)                    not null,
-   constraint PK_CODER primary key (ID)
+create table CODER
+(
+   ID                   varchar(50) not null,
+   VERSION              int not null,
+   NEXTINDEX            int not null,
+   TABLE_NAME           varchar(50) not null,
+   primary key (ID)
 );
 
-comment on table CODER is
-'主键生成表';
+alter table CODER comment '主键生成表';
 
 /*==============================================================*/
 /* Table: ORGANIZATION                                          */
 /*==============================================================*/
-create table ORGANIZATION  (
-   ID                   VARCHAR2(100)                   not null,
-   NAME                 VARCHAR2(200)                   not null,
-   PARENT_ID            VARCHAR2(100),
-   IDX                  number                         default 0 not null,
-   RANK                 number                         default 1 not null,
-   constraint PK_ORGANIZATION primary key (ID)
+create table ORGANIZATION
+(
+   ID                   int not null,
+   NAME                 varchar(200) not null comment '名称',
+   PARENT_ID            varchar(100),
+   IDX                  numeric(8,0) not null default 0 comment '排序',
+   RANK                 numeric(8,0) not null default 1 comment '层次',
+   primary key (ID)
 );
 
-comment on table ORGANIZATION is
-'组织机构';
-
-comment on column ORGANIZATION.NAME is
-'名称';
-
-comment on column ORGANIZATION.IDX is
-'排序';
-
-comment on column ORGANIZATION.RANK is
-'层次';
+alter table ORGANIZATION comment '组织机构';
 
 /*==============================================================*/
 /* Table: PERSON                                                */
 /*==============================================================*/
-create table PERSON  (
-   ID                   number                          not null,
-   NAME                 VARCHAR2(100)                   not null,
-   SEX                  number                          not null,
-   AGE                  number,
-   ORG_ID               VARCHAR2(100),
-   constraint PK_PERSON primary key (ID)
+create table PERSON
+(
+   ID                   int not null auto_increment,
+   NAME                 varchar(100) not null,
+   SEX                  numeric(8,0) not null,
+   AGE                  numeric(8,0),
+   ORG_ID               varchar(100),
+   primary key (ID)
 );
 
-comment on table PERSON is
-'人员';
+alter table PERSON comment '人员';
 
 /*==============================================================*/
 /* Table: PERSON_MOVE_LOG                                       */
 /*==============================================================*/
-create table PERSON_MOVE_LOG  (
-   ID                   NUMBER                          not null,
-   PERSON_ID            NUMBER                          not null,
-   OLD_ORG_ID           VARCHAR2(100)                   not null,
-   NEW_ORG_ID           VARCHAR2(100)                   not null,
-   MOVE_TIME            DATE                            not null,
-   constraint PK_PERSON_MOVE_LOG primary key (ID)
+create table PERSON_MOVE_LOG
+(
+   ID                   int not null auto_increment,
+   PERSON_ID            numeric(8,0) not null,
+   OLD_ORG_ID           varchar(100) not null,
+   NEW_ORG_ID           varchar(100) not null,
+   MOVE_TIME            date not null,
+   primary key (ID)
 );
 
-comment on table PERSON_MOVE_LOG is
-'人员调动记录';
+alter table PERSON_MOVE_LOG comment '人员调动记录';
 
-alter table PERSON
-   add constraint FK_PERSON_REFERENCE_ORGANIZA foreign key (ORG_ID)
-      references ORGANIZATION (ID);
+alter table PERSON add constraint FK_REFERENCE_1 foreign key (ORG_ID)
+      references ORGANIZATION (ID) on delete restrict on update restrict;
 
-alter table PERSON_MOVE_LOG
-   add constraint FK_PERSON_M_REFERENCE_PERSON foreign key (PERSON_ID)
-      references PERSON (ID);
+alter table PERSON_MOVE_LOG add constraint FK_REFERENCE_2 foreign key (PERSON_ID)
+      references PERSON (ID) on delete restrict on update restrict;
 
-alter table PERSON_MOVE_LOG
-   add constraint FK_PERSON_M_REFERENCE_ORGANIZA foreign key (NEW_ORG_ID)
-      references ORGANIZATION (ID);
+alter table PERSON_MOVE_LOG add constraint FK_REFERENCE_3 foreign key (NEW_ORG_ID)
+      references ORGANIZATION (ID) on delete restrict on update restrict;
 
