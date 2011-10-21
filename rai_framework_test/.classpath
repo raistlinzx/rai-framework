@@ -15,7 +15,6 @@
 	<classpathentry kind="lib" path="lib/org.springframework.orm-3.0.3.RELEASE.jar"/>
 	<classpathentry kind="lib" path="lib/org.springframework.transaction-3.0.3.RELEASE.jar"/>
 	<classpathentry kind="lib" path="lib/servlet-api.jar"/>
-	<classpathentry kind="lib" path="lib/struts.jar"/>
 	<classpathentry kind="lib" path="lib/org.springframework.web-3.0.3.RELEASE.jar"/>
 	<classpathentry kind="lib" path="lib/org.springframework.web.struts-3.0.3.RELEASE.jar"/>
 	<classpathentry kind="lib" path="lib/commons-digester.jar"/>
@@ -32,14 +31,20 @@
 	<classpathentry kind="lib" path="lib/ehcache-core-2.2.0.jar"/>
 	<classpathentry kind="lib" path="lib/aopalliance.jar"/>
 	<classpathentry kind="lib" path="lib/org.springframework.aop-3.0.3.RELEASE.jar"/>
-	<classpathentry kind="lib" path="lib/ojdbc14.jar"/>
 	<classpathentry kind="lib" path="lib/javassist-3.9.0.GA.jar"/>
 	<classpathentry kind="lib" path="lib/cglib-2.2.jar"/>
 	<classpathentry kind="lib" path="lib/asm-3.3.jar"/>
 	<classpathentry kind="lib" path="lib/antlr-2.7.6.jar"/>
+	<classpathentry kind="lib" path="lib/mysql-connector-java-5.1.18-bin.jar"/>
+	<classpathentry kind="lib" path="lib/xwork-core-2.2.3.1.jar"/>
+	<classpathentry kind="lib" path="lib/commons-fileupload-1.2.2.jar"/>
+	<classpathentry kind="lib" path="lib/freemarker-2.3.16.jar"/>
+	<classpathentry kind="lib" path="lib/ognl-3.0.1.jar"/>
+	<classpathentry kind="lib" path="lib/struts2-spring-plugin-2.2.3.1.jar"/>
 	<classpathentry kind="con" path="melibrary.com.genuitec.eclipse.j2eedt.core.MYECLIPSE_JAVAEE_5_CONTAINER"/>
 	<classpathentry kind="lib" path="lib/rai_framework.jar" sourcepath="/rai_framework/src"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/rai_framework"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="lib/struts2-core-2.2.3.1.jar"/>
 	<classpathentry kind="output" path="WebRoot/WEB-INF/classes"/>
 </classpath>

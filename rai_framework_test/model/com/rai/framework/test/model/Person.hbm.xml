@@ -9,9 +9,7 @@
 	  	<cache usage="nonstrict-read-write"/>
         <comment>人员表</comment>
         <id name="id" column="ID">
-        	<generator class="sequence">
-        		<param name="sequence">PERSON_SEQ</param>
-        	</generator>
+        	<generator class="native"/>
         </id>
         
 		<property name="name" column="NAME" />

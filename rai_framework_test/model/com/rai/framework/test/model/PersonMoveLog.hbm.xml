@@ -9,9 +9,7 @@
 	  	<cache usage="nonstrict-read-write"/>
         <comment>调动表</comment>
         <id name="id" column="ID">
-        	<generator class="sequence">
-        		<param name="sequence">MOVE_LOG_SEQ</param>
-        	</generator>
+        	<generator class="native"/>
         </id>
         
 		<property name="moveTime" column="MOVE_TIME" />

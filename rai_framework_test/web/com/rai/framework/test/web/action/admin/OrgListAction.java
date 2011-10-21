@@ -2,12 +2,7 @@ package com.rai.framework.test.web.action.admin;
 
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.apache.commons.lang.StringUtils;
-import org.apache.struts.action.ActionForm;
-import org.apache.struts.action.ActionMapping;
 
 import com.rai.framework.model.common.ConditionModel;
 import com.rai.framework.model.common.QueryModel;
@@ -50,9 +45,7 @@ import com.rai.framework.web.struts.action.common.GeneralAction;
 public class OrgListAction extends GeneralAction {
 
 	@Override
-	protected String actionExecute(ActionMapping mapping, ActionForm form,
-			HttpServletRequest request, HttpServletResponse response)
-			throws Exception {
+	protected String actionExecute() throws Exception {
 
 		// 获取参数
 		String parentId = request.getParameter("parentId");
@@ -63,7 +56,7 @@ public class OrgListAction extends GeneralAction {
 			queryModel.add(ConditionModel.eq("[parentOrg.id]", parentId));
 		else
 			queryModel.add(ConditionModel.isNull("[parentOrg.id]"));
-//		queryModel.addOrder("idx", "ASC");
+		// queryModel.addOrder("idx", "ASC");
 
 		PageControl pageControl = this.createPageControl(request);
 		this.generalManager.find(queryModel, pageControl);
@@ -75,15 +68,14 @@ public class OrgListAction extends GeneralAction {
 					Organization.class, parentId));
 		}
 
-		
 		queryModel.setSelect("sum(alias.idx)");
-//		queryModel.add(ConditionModel.isNotNull("persons.age"));
-//		queryModel.setGroupby("parentOrg.id");
-		
-		List list=this.generalManager.find(queryModel);
-		
+		// queryModel.add(ConditionModel.isNotNull("persons.age"));
+		// queryModel.setGroupby("parentOrg.id");
+
+		List list = this.generalManager.find(queryModel);
+
 		request.setAttribute("list", list);
-		
+
 		return SUCCESS;
 	}
 

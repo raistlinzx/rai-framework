@@ -1,11 +1,6 @@
 package com.rai.framework.test.web.action.admin;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.apache.commons.lang.StringUtils;
-import org.apache.struts.action.ActionForm;
-import org.apache.struts.action.ActionMapping;
 
 import com.rai.framework.test.model.Organization;
 import com.rai.framework.web.struts.action.common.GeneralAction;
@@ -13,9 +8,7 @@ import com.rai.framework.web.struts.action.common.GeneralAction;
 public class OrgAction extends GeneralAction {
 
 	@Override
-	protected String actionExecute(ActionMapping mapping, ActionForm form,
-			HttpServletRequest request, HttpServletResponse response)
-			throws Exception {
+	protected String actionExecute() throws Exception {
 
 		String id = request.getParameter("id");
 		String parentId = request.getParameter("parentId");

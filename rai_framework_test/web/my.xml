@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+        "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+
+    <package name="admin" namespace="/admin" extends="default">
+        
+        <!-- 人员列表 -->
+		<action name="personList" class="com.rai.framework.test.web.action.admin.PersonListAction">
+			<result name="SUCCESS">personList.jsp</result>
+		</action>
+		
+		<!-- 人员添加/修改 -->
+		<action name="person" class="com.rai.framework.test.web.action.admin.PersonAction">
+			<result name="SUCCESS">person.jsp</result>
+		</action>
+		<!-- 人员保存 -->
+		<action name="personSave" class="com.rai.framework.test.web.action.admin.PersonSaveAction" />
+		
+		
+		<!-- 机构列表 -->
+		<action name="orgList" class="com.rai.framework.test.web.action.admin.OrgListAction">
+			<result name="SUCCESS">orgList.jsp</result>
+		</action>
+		<!-- 机构添加/修改 -->
+		<action name="org" class="com.rai.framework.test.web.action.admin.OrgAction">
+			<result name="SUCCESS">org.jsp</result>
+		</action>
+		<!-- 机构保存 -->
+		<action name="orgSave" class="com.rai.framework.test.web.action.admin.OrgSaveAction" />		
+		
+		
+		
+		<!-- 人员调动列表 -->
+		<action name="personMoveLogList" class="com.rai.framework.test.web.action.admin.PersonMoveLogListAction">
+			<result name="SUCCESS">personMoveLogList.jsp</result>
+		</action>
+		<!-- 人员调动添加/修改 -->
+		<action name="personMoveLog" class="com.rai.framework.test.web.action.admin.PersonMoveLogAction">
+			<result name="SUCCESS">personMoveLog.jsp</result>
+		</action>
+		<!-- 人员调动保存 -->
+		<action name="personMoveLogSave" class="com.rai.framework.test.web.action.admin.PersonMoveLogSaveAction" />
+
+    </package>
+</struts>
