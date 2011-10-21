@@ -14,6 +14,6 @@
 	<classpathentry kind="lib" path="lib/org.springframework.orm-3.0.3.RELEASE.jar"/>
 	<classpathentry kind="lib" path="lib/org.springframework.transaction-3.0.3.RELEASE.jar"/>
 	<classpathentry kind="lib" path="lib/servlet-api.jar"/>
-	<classpathentry kind="lib" path="lib/struts.jar"/>
+	<classpathentry kind="lib" path="lib/struts2-core-2.2.3.1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

@@ -1,20 +1,13 @@
 package com.rai.framework.web.struts.action.common;
 
-import java.util.Iterator;
-import java.util.Map;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.struts.action.Action;
-import org.apache.struts.action.ActionForm;
-import org.apache.struts.action.ActionForward;
-import org.apache.struts.action.ActionMapping;
-import org.apache.struts.action.ActionMessages;
+import org.apache.struts2.interceptor.ServletRequestAware;
+import org.apache.struts2.interceptor.ServletResponseAware;
 import org.displaytag.tags.TableTagParameters;
 import org.displaytag.util.ParamEncoder;
 
@@ -22,7 +15,8 @@ import com.rai.framework.exception.FrameworkException;
 import com.rai.framework.exception.FrameworkRuntimeException;
 import com.rai.framework.utils.PageControl;
 
-public abstract class BaseAction extends Action {
+public abstract class BaseAction implements ServletRequestAware,
+		ServletResponseAware {
 
 	public final static String SUCCESS = "SUCCESS";
 	public final static String FAILURE = "FAILURE";
@@ -35,21 +29,14 @@ public abstract class BaseAction extends Action {
 
 	protected final Log logger = LogFactory.getLog(super.getClass());
 
-	public ActionForward execute(ActionMapping mapping, ActionForm form,
-			HttpServletRequest request, HttpServletResponse response)
-			throws Exception {
-		ActionMessages messages = new ActionMessages();
-		ActionForward forward = new ActionForward();
-		String forwordName = "failure";
+	public String execute() throws Exception {
+		String forwordName = FAILURE;
 
-		String errorCode = "00001";
+		String errorCode = "00000";
 
-		String log = "[00001] Top Exception in BaseAction";
+		String log = "[00000] Top Exception in BaseAction";
 		try {
-			if (form != null) {
-				trimFormFields(form);
-			}
-			forwordName = actionExecute(mapping, form, request, response);
+			forwordName = actionExecute();
 		} catch (FrameworkRuntimeException ex) {
 			ex.printStackTrace();
 			if (this.logger.isErrorEnabled()) {
@@ -77,13 +64,6 @@ public abstract class BaseAction extends Action {
 			}
 			request.setAttribute("ErrorMsg", errorCode);
 		}
-		if (!(messages.isEmpty())) {
-			saveMessages(request, messages);
-
-			forward = mapping.findForward(forwordName);
-		} else {
-			forward = mapping.findForward(forwordName);
-		}
 
 		String referer = request.getParameter(REFERER);
 
@@ -93,50 +73,10 @@ public abstract class BaseAction extends Action {
 			else
 				saveReferer(request, referer);
 
-		return forward;
+		return forwordName;
 	}
 
-	protected abstract String actionExecute(ActionMapping paramActionMapping,
-			ActionForm paramActionForm,
-			HttpServletRequest paramHttpServletRequest,
-			HttpServletResponse paramHttpServletResponse) throws Exception;
-
-	protected void trimFormFields(ActionForm form) throws Exception {
-		Map properties = PropertyUtils.describe(form);
-		Iterator it = properties.keySet().iterator();
-
-		while (it.hasNext()) {
-			String property = (String) it.next();
-			Object value = PropertyUtils.getSimpleProperty(form, property);
-			if ((value == null) || (!(value instanceof String)))
-				continue;
-			PropertyUtils.setSimpleProperty(form, property, ((String) value)
-					.trim());
-		}
-	}
-
-	//	
-	//	
-	// @Override
-	// protected String actionExecute(ActionMapping mapping, ActionForm form,
-	// HttpServletRequest request, HttpServletResponse response)
-	// throws Exception {
-	// try {
-	// System.out.println("----Referer:" + request.getHeader(REFERER)
-	// + "?" + request.getQueryString());
-	// String referer = request.getParameter(REFERER);
-	//
-	// if (StringUtils.isNotBlank(referer))
-	// if ("true".equals(referer))
-	// saveReferer(request);
-	// else
-	// saveReferer(request, referer);
-	//
-	// } catch (RuntimeException e) {
-	// e.printStackTrace();
-	// }
-	// return SUCCESS;
-	// }
+	protected abstract String actionExecute() throws Exception;
 
 	protected void saveReferer(HttpServletRequest request) {
 		// request.getSession().setAttribute(REFERER,
@@ -230,4 +170,18 @@ public abstract class BaseAction extends Action {
 		}
 		return new PageControl(request, pageIndex, pageSize);
 	}
+
+	protected HttpServletRequest request;
+	protected HttpServletResponse response;
+
+	@Override
+	public void setServletRequest(HttpServletRequest request) {
+		this.request = request;
+	}
+
+	@Override
+	public void setServletResponse(HttpServletResponse response) {
+		this.response = response;
+	}
+
 }

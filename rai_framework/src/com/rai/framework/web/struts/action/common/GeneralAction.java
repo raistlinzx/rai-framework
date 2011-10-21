@@ -11,8 +11,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.struts.action.ActionForm;
-import org.apache.struts.action.ActionMapping;
 
 import com.rai.framework.model.common.QueryModel;
 import com.rai.framework.service.common.GeneralManager;
@@ -50,9 +48,7 @@ public class GeneralAction extends BaseAction {
 	private static final Log log = LogFactory.getLog(GeneralAction.class);
 
 	@Override
-	protected String actionExecute(ActionMapping mapping, ActionForm form,
-			HttpServletRequest request, HttpServletResponse response)
-			throws Exception {
+	protected String actionExecute() throws Exception {
 
 		String cmd = request.getParameter(CMD);
 		String redirectURL = request.getParameter(REDIRECT_URL);
