@@ -1,6 +1,6 @@
 /*==============================================================*/
 /* DBMS name:      MySQL 5.0                                    */
-/* Created on:     2011/10/21 15:36:05                          */
+/* Created on:     2011/10/24 14:03:50                          */
 /*==============================================================*/
 
 
@@ -31,7 +31,7 @@ alter table CODER comment '主键生成表';
 /*==============================================================*/
 create table ORGANIZATION
 (
-   ID                   int not null,
+   ID                   varchar(100) not null,
    NAME                 varchar(200) not null comment '名称',
    PARENT_ID            varchar(100),
    IDX                  numeric(8,0) not null default 0 comment '排序',
@@ -62,7 +62,7 @@ alter table PERSON comment '人员';
 create table PERSON_MOVE_LOG
 (
    ID                   int not null auto_increment,
-   PERSON_ID            numeric(8,0) not null,
+   PERSON_ID            int not null,
    OLD_ORG_ID           varchar(100) not null,
    NEW_ORG_ID           varchar(100) not null,
    MOVE_TIME            date not null,
@@ -70,6 +70,9 @@ create table PERSON_MOVE_LOG
 );
 
 alter table PERSON_MOVE_LOG comment '人员调动记录';
+
+alter table ORGANIZATION add constraint FK_REFERENCE_4 foreign key (PARENT_ID)
+      references ORGANIZATION (ID) on delete restrict on update restrict;
 
 alter table PERSON add constraint FK_REFERENCE_1 foreign key (ORG_ID)
       references ORGANIZATION (ID) on delete restrict on update restrict;
