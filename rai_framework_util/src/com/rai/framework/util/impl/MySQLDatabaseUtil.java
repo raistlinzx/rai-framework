@@ -32,6 +32,22 @@ public class MySQLDatabaseUtil extends AbstractDatabaseUtil implements
 				ColumnMap column = new ColumnMap();
 				column.setName(rs.getString("field"));
 				column.setType(rs.getString("type"));
+				String type=rs.getString("type");
+				int x = column.getType().indexOf("(");
+				
+				if (x > 0) {
+					column.setType(type.substring(0, x).toLowerCase());
+					String sizeStr = type.substring(x + 1);
+					sizeStr = sizeStr.replace(")", "");
+
+					String[] sizes = sizeStr.split(",");
+					column.setDataLength(Integer.valueOf(sizes[0]));
+					try {
+						column.setDataScale(Integer.valueOf(sizes[1]));
+					} catch (Exception e) {
+					}
+				} else
+					column.setType(type.toLowerCase());
 				column.setPrimary("PRI".equals(rs.getString("key")));
 
 				EXTRA extra = EXTRA.DEFINED;
