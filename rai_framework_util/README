@@ -1,0 +1,13 @@
+功能说明:
+1.根据数据库表结构，自动生成对应Java对象
+2.根据数据库表结构，自动生成对应Hibernate HBM文件
+3.支持外键映射
+4.可增加支持其他数据库
+
+Ver1.0
+1.实现MySQL数据库映射
+2.配置文件config.properties
+3.类型对应文件datatype.properties
+4.数据库表转换接口 com.rai.framework.util.interfaces.DatabaseUtil
+5.Java对象生成接口 com.rai.framework.util.interfaces.ClassGenerator
+6.HBM转换接口 com.rai.framework.util.interfaces.HBMGenerator
