@@ -1,0 +1,17 @@
+package #PACKAGE_NAME#;
+
+#IMPORTS#
+
+/**
+ * #CLASS_NAME# entity.
+ * 
+ * @author Rai Framework Utils
+ * @since #NOWDATE#
+ */
+public class #CLASS_NAME# implements java.io.Serializable {
+
+	// Fields
+#PROPERTY_LIST#
+	// Functions
+#PROPERTY_FUNC_LIST#
+}
