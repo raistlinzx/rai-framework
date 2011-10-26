@@ -32,7 +32,7 @@ public class Factory {
 		datatype = loadPropertiesFile(DATATYPE_FILE_PATH);
 
 		String target = config.getProperty("target");
-		String hbmBuild = config.getProperty("hbm.build");
+		String hbmBuild = config.getProperty("hbmfile.build");
 
 		DatabaseUtil databaseUtil = null;
 		ClassGenerator classGenerator = new DefaultClassGenerator();

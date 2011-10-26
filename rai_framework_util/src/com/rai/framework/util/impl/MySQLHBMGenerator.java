@@ -13,13 +13,12 @@ public class MySQLHBMGenerator implements HBMGenerator {
 	public void generateFile(OutputStream os, TableMap tableMap,
 			String templatePath, String packageName) throws Exception {
 		String hbmText = FileReaderUtil.readFile(templatePath);
-
 		// nowdate
 		hbmText = hbmText.replaceAll("#NOWDATE#", new SimpleDateFormat(
 				"yyyy-MM-dd HH:mm:ss").format(System.currentTimeMillis()));
 
 		// class_name
-		hbmText = hbmText.replaceAll("#CLASS_NAME#", packageName + "."
+		hbmText = hbmText.replaceAll("#TABLE_CLASS_NAME#", packageName + "."
 				+ tableMap.getClassName());
 
 		// table_name
@@ -33,29 +32,51 @@ public class MySQLHBMGenerator implements HBMGenerator {
 		StringBuffer propertyBuffer = new StringBuffer("");
 		StringBuffer bagBuffer = new StringBuffer("");
 
+		int[] idPosition = findTemplatePosition(hbmText, "ID");
+		int[] propertyPosition = findTemplatePosition(hbmText, "PROPERTY");
+		int[] normalPosition = findTemplatePosition(hbmText, "NORMAL");
+		int[] manyPosition = findTemplatePosition(hbmText, "MANY");
+		int[] bagPosition = findTemplatePosition(hbmText, "BAG");
+
+		String template_id = hbmText.substring(idPosition[2], idPosition[3]);
+		String template_normal = hbmText.substring(normalPosition[2],
+				normalPosition[3]);
+		String template_many = hbmText.substring(manyPosition[2],
+				manyPosition[3]);
+		String template_bag = hbmText.substring(bagPosition[2], bagPosition[3]);
+
 		for (ColumnMap column : tableMap.getColumns()) {
 
 			if (column.getPrimary()) {
+				String idStr = template_id;
 				// id
 				String idextra = "assigned";
 				if (ColumnMap.EXTRA.AUTO.equals(column.getExtra()))
 					idextra = "native";
-				idBuffer.append("\t\t<id name=\"" + column.getPropertyName()
-						+ "\" column=\"" + column.getName() + "\">\n");
-				idBuffer.append("\t\t\t<generator class=\"" + idextra
-						+ "\" />\n");
-				idBuffer.append("\t\t</id>\n");
+				idStr = idStr.replaceAll("#PROPERTY_NAME#", column
+						.getPropertyName());
+				idStr = idStr.replaceAll("#COLUMN_NAME#", column.getName());
+				idStr = idStr.replaceAll("#EXTRA#", idextra);
+				idBuffer.append(idStr);
 			} else {
 				if (column.getForeign() == null) {
 					// normal property
-					propertyBuffer.append("\t\t<property name=\""
-							+ column.getPropertyName() + "\" column=\""
-							+ column.getName() + "\" />\n");
+					String normalStr = template_normal;
+					normalStr = normalStr.replaceAll("#PROPERTY_NAME#", column
+							.getPropertyName());
+					normalStr = normalStr.replaceAll("#COLUMN_NAME#", column
+							.getName());
+					propertyBuffer.append(normalStr);
 				} else {
 					// many-to-one
-					propertyBuffer.append("\t\t<many-to-one name=\""
-							+ column.getPropertyName() + "\" class=\""+packageName+"."+column.getForeign().getClassName()+"\" column=\""
-							+ column.getName() + "\" />\n");
+					String manyStr = template_many;
+					manyStr = manyStr.replaceAll("#PROPERTY_NAME#", column
+							.getPropertyName());
+					manyStr = manyStr.replaceAll("#MANY_CLASS_NAME#", packageName
+							+ "." + column.getForeign().getClassName());
+					manyStr = manyStr.replaceAll("#COLUMN_NAME#", column
+							.getName());
+					propertyBuffer.append(manyStr);
 				}
 			}
 		}
@@ -106,16 +127,30 @@ public class MySQLHBMGenerator implements HBMGenerator {
 		// }
 		// hbmText = hbmText.replaceAll("#IMPORTS#", importBuffer.toString());
 
-		// id
-		hbmText = hbmText.replaceAll("#ID#", idBuffer.toString());
-		// properties
-		hbmText = hbmText.replaceAll("#PROPERTY_LIST#", propertyBuffer
-				.toString());
 		// bags
-		hbmText = hbmText.replaceAll("#BAG_LIST#", bagBuffer.toString());
+		hbmText = hbmText.replaceAll(hbmText.substring(bagPosition[0],
+				bagPosition[1]), bagBuffer.toString());
+		// properties
+		hbmText = hbmText.replaceAll(hbmText.substring(propertyPosition[0],
+				propertyPosition[1]), propertyBuffer.toString());		
+		// id
+		hbmText = hbmText.replaceAll(hbmText.substring(idPosition[0],
+				idPosition[1]), idBuffer.toString());
+		
 
 		os.write(hbmText.getBytes());
 		os.flush();
+	}
+
+	protected int[] findTemplatePosition(String template, String tag) {
+
+		int start = template.indexOf("#" + tag + "_START#");
+		int end = template.indexOf("#" + tag + "_END#") + tag.length() + 6;
+		int template_start = start + tag.length() + 8;
+		int template_end = template.indexOf("#" + tag + "_END#") - 1;
+
+		int[] position = { start, end, template_start, template_end };
+		return position;
 	}
 
 }
