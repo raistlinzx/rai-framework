@@ -2,6 +2,7 @@ package com.rai.framework.util.impl;
 
 import java.io.OutputStream;
 import java.text.SimpleDateFormat;
+import java.util.Map.Entry;
 
 import com.rai.framework.util.interfaces.HBMGenerator;
 import com.rai.framework.util.model.ColumnMap;
@@ -72,13 +73,28 @@ public class MySQLHBMGenerator implements HBMGenerator {
 					String manyStr = template_many;
 					manyStr = manyStr.replaceAll("#PROPERTY_NAME#", column
 							.getPropertyName());
-					manyStr = manyStr.replaceAll("#MANY_CLASS_NAME#", packageName
+					manyStr = manyStr.replaceAll("#CLASS_NAME#", packageName
 							+ "." + column.getForeign().getClassName());
 					manyStr = manyStr.replaceAll("#COLUMN_NAME#", column
 							.getName());
 					propertyBuffer.append(manyStr);
 				}
 			}
+		}
+
+		for (Entry<ColumnMap, TableMap> foreign : tableMap.getOneToMany()
+				.entrySet()) {
+			ColumnMap column = foreign.getKey();
+			TableMap table = foreign.getValue();
+
+			String bagStr = template_bag;
+			bagStr = bagStr.replaceAll("#PROPERTY_NAME#", column
+					.getPropertyName()
+					+ table.getClassName());
+			bagStr = bagStr.replaceAll("#COLUMN_NAME#", column.getName());
+			bagStr = bagStr.replaceAll("#CLASS_NAME#", packageName + "."
+					+ table.getClassName());
+			bagBuffer.append(bagStr);
 		}
 
 		// propertyClass = datatype.getProperty(target + "." + type);
@@ -132,11 +148,10 @@ public class MySQLHBMGenerator implements HBMGenerator {
 				bagPosition[1]), bagBuffer.toString());
 		// properties
 		hbmText = hbmText.replaceAll(hbmText.substring(propertyPosition[0],
-				propertyPosition[1]), propertyBuffer.toString());		
+				propertyPosition[1]), propertyBuffer.toString());
 		// id
 		hbmText = hbmText.replaceAll(hbmText.substring(idPosition[0],
 				idPosition[1]), idBuffer.toString());
-		
 
 		os.write(hbmText.getBytes());
 		os.flush();

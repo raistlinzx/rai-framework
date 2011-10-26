@@ -19,10 +19,14 @@
 		<property name="#PROPERTY_NAME#" column="#COLUMN_NAME#" />
 #NORMAL_END#
 #MANY_START#
-		<many-to-one name="#PROPERTY_NAME#" class="#MANY_CLASS_NAME#" column="#COLUMN_NAME#" />
+		<many-to-one name="#PROPERTY_NAME#" class="#CLASS_NAME#" column="#COLUMN_NAME#" />
 #MANY_END#
 #PROPERTY_END#
 #BAG_START#
+		<bag name="#PROPERTY_NAME#" cascade="all-delete-orphan" inverse="true" lazy="extra">
+			<key column="#COLUMN_NAME#"/>
+			<one-to-many class="#CLASS_NAME#" />
+		</bag>
 #BAG_END#
     </class>
 </hibernate-mapping>

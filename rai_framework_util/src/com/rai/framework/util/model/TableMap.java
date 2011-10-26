@@ -1,16 +1,19 @@
 package com.rai.framework.util.model;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class TableMap {
-	
+
 	/** 表名 */
 	private String name;
 	/** 备注 */
 	private String comment;
 
 	private List<ColumnMap> columns = new ArrayList<ColumnMap>();
+	private Map<ColumnMap,TableMap> oneToMany = new HashMap<ColumnMap,TableMap>();
 
 	public String getName() {
 		return name;
@@ -36,6 +39,14 @@ public class TableMap {
 		this.columns = columns;
 	}
 
+	public void setOneToMany(Map<ColumnMap,TableMap> oneToMany) {
+		this.oneToMany = oneToMany;
+	}
+
+	public Map<ColumnMap,TableMap> getOneToMany() {
+		return oneToMany;
+	}
+
 	/**
 	 * 根据表名，以“_”分隔单词首字母大写
 	 * 
@@ -58,9 +69,7 @@ public class TableMap {
 
 	@Override
 	public String toString() {
-		return "TableMap [comment=" + comment
-				+ ", name=" + name + "]";
+		return "TableMap [comment=" + comment + ", name=" + name + "]";
 	}
-	
-	
+
 }

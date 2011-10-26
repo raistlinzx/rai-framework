@@ -110,14 +110,15 @@ public class Factory {
 		TableMap targetTable = findTableMap(tableMaps, foreign
 				.getReferencedTableName());
 
-		refColumn.setForeign(targetTable);
+		refColumn.setForeign(targetTable);		
+		targetTable.getOneToMany().put(refColumn, refTable);
 
 		System.out.println("FOREIGN[" + refTable.getClassName() + "("
 				+ refColumn.getPropertyName() + ")->"
 				+ targetTable.getClassName() + "]");
 	}
 
-	private static TableMap findTableMap(List<TableMap> tableMaps,
+	public static TableMap findTableMap(List<TableMap> tableMaps,
 			String tableName) {
 		for (TableMap table : tableMaps) {
 			if (table.getName().equals(tableName)) {
@@ -127,7 +128,7 @@ public class Factory {
 		return null;
 	}
 
-	private static ColumnMap findColumnMap(List<ColumnMap> columnMap,
+	public static ColumnMap findColumnMap(List<ColumnMap> columnMap,
 			String columnName) {
 		for (ColumnMap column : columnMap) {
 			if (column.getName().equals(columnName)) {
