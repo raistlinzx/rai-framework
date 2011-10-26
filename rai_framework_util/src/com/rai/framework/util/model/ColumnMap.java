@@ -14,7 +14,7 @@ public class ColumnMap {
 	/** 数据长度 */
 	private Integer dataLength;
 	/** 数据精度 */
-	private Integer dataScala;
+	private Integer dataScale;
 	/** 默认值 */
 	private String defaultValue;
 	/** 是否主键 */
@@ -37,20 +37,7 @@ public class ColumnMap {
 	}
 
 	public void setType(String type) {
-		int x = type.indexOf("(");
-		if (x > 0) {
-			this.type = type.substring(0, x).toLowerCase();
-			String sizeStr = type.substring(x + 1);
-			sizeStr = sizeStr.replace(")", "");
-
-			String[] sizes = sizeStr.split(",");
-			this.setDataLength(Integer.valueOf(sizes[0]));
-			try {
-				this.setDataScala(Integer.valueOf(sizes[1]));
-			} catch (Exception e) {
-			}
-		} else
-			this.type = type.toLowerCase();
+		this.type=type;
 	}
 
 	public Integer getDataLength() {
@@ -61,12 +48,12 @@ public class ColumnMap {
 		this.dataLength = dataLength;
 	}
 
-	public Integer getDataScala() {
-		return dataScala;
+	public Integer getDataScale() {
+		return dataScale;
 	}
 
-	public void setDataScala(Integer dataScala) {
-		this.dataScala = dataScala;
+	public void setDataScale(Integer dataScale) {
+		this.dataScale = dataScale;
 	}
 
 	public void setDefaultValue(String defaultValue) {
@@ -131,7 +118,7 @@ public class ColumnMap {
 	@Override
 	public String toString() {
 		return "ColumnMap [dataLength=" + dataLength + ", dataScala="
-				+ dataScala + ", defaultValue=" + defaultValue + ", extra="
+				+ dataScale + ", defaultValue=" + defaultValue + ", extra="
 				+ extra + ", foreign=" + foreign + ", name=" + name
 				+ ", primary=" + primary + ", type=" + type + "]";
 	}
