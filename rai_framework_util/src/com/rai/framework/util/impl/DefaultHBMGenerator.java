@@ -8,7 +8,7 @@ import com.rai.framework.util.interfaces.HBMGenerator;
 import com.rai.framework.util.model.ColumnMap;
 import com.rai.framework.util.model.TableMap;
 
-public class MySQLHBMGenerator implements HBMGenerator {
+public class DefaultHBMGenerator implements HBMGenerator {
 
 	@Override
 	public void generateFile(OutputStream os, TableMap tableMap,

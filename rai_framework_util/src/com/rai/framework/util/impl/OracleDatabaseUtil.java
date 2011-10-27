@@ -25,9 +25,21 @@ public class OracleDatabaseUtil extends AbstractDatabaseUtil implements
 		List<ColumnMap> columnNameList = null;
 		try {
 			Statement statement = conn.createStatement();
-			ResultSet rs = statement
-					.executeQuery("select * from user_tab_columns where table_name='"
-							+ tableName + "'");
+			// Step.1 Load Primary columns List;
+
+			String primarySQL = "select column_name from user_constraints uc,user_cons_columns ucc where uc.table_name='"
+					+ tableName
+					+ "' and uc.constraint_type='P' and ucc.CONSTRAINT_NAME=uc.CONSTRAINT_NAME";
+			ResultSet primaryRS = statement.executeQuery(primarySQL);
+			List<String> primaryList = new ArrayList<String>();
+			while (primaryRS.next()) {
+				primaryList.add(primaryRS.getString("column_name"));
+			}
+
+			// Step.2 Load Columns
+			String columnSQL = "select * from user_tab_columns where table_name='"
+					+ tableName + "'";
+			ResultSet rs = statement.executeQuery(columnSQL);
 			columnNameList = new ArrayList<ColumnMap>();
 			while (rs.next()) {
 				ColumnMap column = new ColumnMap();
@@ -40,14 +52,11 @@ public class OracleDatabaseUtil extends AbstractDatabaseUtil implements
 					column.setDataLength(rs.getInt("data_precision"));
 					column.setDataScale(rs.getInt("data_scale"));
 				}
-
-				String checkPRISql = "select count(1) from user_constraints where table_name='"
-						+ tableName + "' and constraint_type='P'";
-				ResultSet checkRS = statement.executeQuery(checkPRISql);
-				if (checkRS.next())
+				if (primaryList.contains(column.getName()))
+				{
 					column.setPrimary(true);
-
-				column.setExtra(EXTRA.DEFINED);
+					column.setExtra(EXTRA.DEFINED);
+				}
 				System.out.println(column);
 				columnNameList.add(column);
 			}

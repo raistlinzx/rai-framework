@@ -11,7 +11,8 @@ import java.util.logging.Logger;
 
 import com.rai.framework.util.impl.DefaultClassGenerator;
 import com.rai.framework.util.impl.MySQLDatabaseUtil;
-import com.rai.framework.util.impl.MySQLHBMGenerator;
+import com.rai.framework.util.impl.DefaultHBMGenerator;
+import com.rai.framework.util.impl.OracleDatabaseUtil;
 import com.rai.framework.util.interfaces.ClassGenerator;
 import com.rai.framework.util.interfaces.DatabaseUtil;
 import com.rai.framework.util.interfaces.HBMGenerator;
@@ -36,11 +37,14 @@ public class Factory {
 
 		DatabaseUtil databaseUtil = null;
 		ClassGenerator classGenerator = new DefaultClassGenerator();
-		HBMGenerator hbmGenerator = null;
+		HBMGenerator hbmGenerator = new DefaultHBMGenerator();
 		if ("mysql".equals(target.toLowerCase())) {
 			// mysql
 			databaseUtil = new MySQLDatabaseUtil(config);
-			hbmGenerator = new MySQLHBMGenerator();
+		}
+		else if ("oracle".equals(target.toLowerCase())){
+			//oracle
+			databaseUtil=new OracleDatabaseUtil(config);
 		}
 
 		List<TableMap> tableMaps = databaseUtil.loadAllTables();
@@ -110,7 +114,7 @@ public class Factory {
 		TableMap targetTable = findTableMap(tableMaps, foreign
 				.getReferencedTableName());
 
-		refColumn.setForeign(targetTable);		
+		refColumn.setForeign(targetTable);
 		targetTable.getOneToMany().put(refColumn, refTable);
 
 		System.out.println("FOREIGN[" + refTable.getClassName() + "("
