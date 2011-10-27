@@ -5,6 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.HashSet;
 import java.util.Properties;
 import java.util.Set;
+import java.util.Map.Entry;
 
 import com.rai.framework.util.interfaces.ClassGenerator;
 import com.rai.framework.util.model.ColumnMap;
@@ -34,6 +35,7 @@ public class DefaultClassGenerator implements ClassGenerator {
 		StringBuffer propertyBuffer = new StringBuffer("");
 		StringBuffer propertyFuncBuffer = new StringBuffer("");
 
+		// Columns
 		for (ColumnMap column : tableMap.getColumns()) {
 			String type = column.getType();
 			String propertyClass = null;
@@ -70,10 +72,55 @@ public class DefaultClassGenerator implements ClassGenerator {
 
 			// function get
 			propertyFuncBuffer.append("\tpublic " + propertyClass + " get"
-					+ func_PropertyName + "(" + propertyClass + " "
-					+ propertyName + ") {\n");
+					+ func_PropertyName + "() {\n");
 			propertyFuncBuffer.append("\t\treturn " + propertyName + ";\n");
 			propertyFuncBuffer.append("\t}\n");
+		}
+
+		// OneToMany
+		if (!tableMap.getOneToMany().isEmpty()) {
+			importBuffer.append("import java.util.List;\n");
+			importBuffer.append("import java.util.ArrayList;\n");
+
+			// bagStr = bagStr.replaceAll("#PROPERTY_NAME#", column
+			// .getPropertyName()
+			// + table.getClassName());
+			// bagStr = bagStr.replaceAll("#COLUMN_NAME#", column.getName());
+			// bagStr = bagStr.replaceAll("#CLASS_NAME#", packageName + "."
+			// + table.getClassName());
+			//			
+			for (Entry<ColumnMap, TableMap> foreign : tableMap.getOneToMany()
+					.entrySet()) {
+				ColumnMap column = foreign.getKey();
+				TableMap targetTable = foreign.getValue();
+				String propertyName = column.getPropertyName()
+						+ targetTable.getClassName();
+
+				propertyBuffer.append("\tprivate List<"
+						+ targetTable.getClassName() + "> " + propertyName
+						+ " = new ArrayList<" + targetTable.getClassName()
+						+ ">();\n");
+
+				// function set
+				String func_PropertyName = propertyName.substring(0, 1)
+						.toUpperCase()
+						+ propertyName.substring(1);
+				propertyFuncBuffer.append("\tpublic void set"
+						+ func_PropertyName + "(List<"
+						+ targetTable.getClassName() + "> " + propertyName
+						+ ") {\n");
+				propertyFuncBuffer.append("\t\tthis." + propertyName + " = "
+						+ propertyName + ";\n");
+				propertyFuncBuffer.append("\t}\n");
+
+				// function get
+				propertyFuncBuffer.append("\tpublic List<"
+						+ targetTable.getClassName() + "> get"
+						+ func_PropertyName + "() {\n");
+				propertyFuncBuffer.append("\t\treturn " + propertyName + ";\n");
+				propertyFuncBuffer.append("\t}\n");
+			}
+
 		}
 
 		// properties
