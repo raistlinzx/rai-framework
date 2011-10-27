@@ -3,6 +3,12 @@
 2.根据数据库表结构，自动生成对应Hibernate HBM文件
 3.支持外键映射
 4.可增加支持其他数据库
+5.运行com.rai.framework.util.Main main()
+
+Ver1.1
+1.支持Oracle数据库
+2.支持OneToMany映射List
+3.更新Oracle数据类型映射
 
 Ver1.0
 1.实现MySQL数据库映射

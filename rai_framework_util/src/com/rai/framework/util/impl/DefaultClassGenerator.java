@@ -37,13 +37,17 @@ public class DefaultClassGenerator implements ClassGenerator {
 
 		// Columns
 		for (ColumnMap column : tableMap.getColumns()) {
-			String type = column.getType();
+			String type = column.getType().toLowerCase();
 			String propertyClass = null;
 			if (column.getForeign() != null) {
 				propertyClass = column.getForeign().getClassName();
 			} else {
-				propertyClass = datatype.getProperty(target + "." + type);
-
+				if (column.getDataScale() != null && column.getDataScale() != 0
+						&& datatype.containsKey(target + "." + type + ".scale"))
+					propertyClass = datatype.getProperty(target + "." + type
+							+ ".scale");
+				else
+					propertyClass = datatype.getProperty(target + "." + type);
 				// default
 				if (propertyClass == null)
 					propertyClass = "String";
@@ -82,13 +86,6 @@ public class DefaultClassGenerator implements ClassGenerator {
 			importBuffer.append("import java.util.List;\n");
 			importBuffer.append("import java.util.ArrayList;\n");
 
-			// bagStr = bagStr.replaceAll("#PROPERTY_NAME#", column
-			// .getPropertyName()
-			// + table.getClassName());
-			// bagStr = bagStr.replaceAll("#COLUMN_NAME#", column.getName());
-			// bagStr = bagStr.replaceAll("#CLASS_NAME#", packageName + "."
-			// + table.getClassName());
-			//			
 			for (Entry<ColumnMap, TableMap> foreign : tableMap.getOneToMany()
 					.entrySet()) {
 				ColumnMap column = foreign.getKey();

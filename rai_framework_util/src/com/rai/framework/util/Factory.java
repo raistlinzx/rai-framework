@@ -33,6 +33,7 @@ public class Factory {
 		datatype = loadPropertiesFile(DATATYPE_FILE_PATH);
 
 		String target = config.getProperty("target");
+		log.info("Target Database:"+target);
 		String hbmBuild = config.getProperty("hbmfile.build");
 
 		DatabaseUtil databaseUtil = null;
