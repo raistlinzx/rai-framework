@@ -6,11 +6,13 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 
 import com.rai.framework.model.common.QueryModel;
 import com.rai.framework.service.common.GeneralManager;
@@ -42,84 +44,87 @@ public class GeneralAction extends BaseAction {
 	public static String TARGET_CLASS = "targetClass";
 	public static String PK_NAME = "id";
 
-	protected Map<?, ?> classNameMap;
+	@Resource
+	protected Map<String, String> classNameMap;
+	@Autowired
 	protected GeneralManager generalManager;
 
 	private static final Log log = LogFactory.getLog(GeneralAction.class);
 
-	@Override
-	protected String actionExecute() throws Exception {
-
-		String cmd = request.getParameter(CMD);
-		String redirectURL = request.getParameter(REDIRECT_URL);
-		String returnKey = request.getParameter(RETURN_KEY);
-		String targetClass = request.getParameter(TARGET_CLASS);
-		String referer = request.getParameter(CMD_REFERER);
-
-		try {
-			if (cmd == null)
-				throw new Exception("cmd is null");
-
-			Map<String, String> requestMap = cleanRequestMap(request
-					.getParameterMap(), CMD, REDIRECT_URL, RETURN_KEY,
-					TARGET_CLASS, CMD_REFERER);
-			// 清理requestMap中命令参数
-
-			/** 开始执行操作 */
-			String className = getClassName(targetClass);
-
-			Object object = null;
-			List<?> list = null;
-			// cmd
-			/** ----Create---- */
-			if ("create".equals(cmd)) {
-				object = cmd_create(className, requestMap);
-				request.setAttribute(targetClass, object);
-			}
-			/** ----Update---- */
-			else if ("update".equals(cmd)) {
-				object = cmd_update(className, requestMap);
-				request.setAttribute(targetClass, object);
-			}
-			/** ----Get---- */
-			else if ("get".equals(cmd)) {
-				object = cmd_get(className, requestMap);
-				request.setAttribute(targetClass, object);
-			}
-			/** ----Delete---- */
-			else if ("delete".equals(cmd)) {
-				cmd_delete(className, requestMap);
-			}
-			/** ----List---- */
-			else if ("list".equals(cmd)) {
-				list = cmd_list(className, requestMap);
-				request.setAttribute("list", list);
-			}
-			/** ----ListByPage---- */
-			else if ("listByPage".equals(cmd)) {
-
-				PageControl pageControl = this.createPageControl(request);
-
-				pageControl = cmd_listByPage(className, requestMap, pageControl);
-				request.setAttribute("pageControl", pageControl);
-			}
-			if ("true".equals(referer))
-				saveReferer(request);
-
-			// 返回
-			if (redirectURL != null)
-				response.sendRedirect(redirectURL);
-			else if (returnKey != null)
-				return returnKey;
-			else if (targetClass != null)
-				return targetClass + "." + cmd;
-
-		} catch (Exception e) {
-			log.debug(e);
-			throw new RuntimeException(e.getMessage());
-		}
-		return SUCCESS;
-	}
+	//
+	// @Override
+	// protected String actionExecute() throws Exception {
+	//
+	// String cmd = request.getParameter(CMD);
+	// String redirectURL = request.getParameter(REDIRECT_URL);
+	// String returnKey = request.getParameter(RETURN_KEY);
+	// String targetClass = request.getParameter(TARGET_CLASS);
+	// String referer = request.getParameter(CMD_REFERER);
+	//
+	// try {
+	// if (cmd == null)
+	// throw new Exception("cmd is null");
+	//
+	// Map<String, String> requestMap = cleanRequestMap(request
+	// .getParameterMap(), CMD, REDIRECT_URL, RETURN_KEY,
+	// TARGET_CLASS, CMD_REFERER);
+	// // 清理requestMap中命令参数
+	//
+	// /** 开始执行操作 */
+	// String className = getClassName(targetClass);
+	//
+	// Object object = null;
+	// List<?> list = null;
+	// // cmd
+	// /** ----Create---- */
+	// if ("create".equals(cmd)) {
+	// object = cmd_create(className, requestMap);
+	// request.setAttribute(targetClass, object);
+	// }
+	// /** ----Update---- */
+	// else if ("update".equals(cmd)) {
+	// object = cmd_update(className, requestMap);
+	// request.setAttribute(targetClass, object);
+	// }
+	// /** ----Get---- */
+	// else if ("get".equals(cmd)) {
+	// object = cmd_get(className, requestMap);
+	// request.setAttribute(targetClass, object);
+	// }
+	// /** ----Delete---- */
+	// else if ("delete".equals(cmd)) {
+	// cmd_delete(className, requestMap);
+	// }
+	// /** ----List---- */
+	// else if ("list".equals(cmd)) {
+	// list = cmd_list(className, requestMap);
+	// request.setAttribute("list", list);
+	// }
+	// /** ----ListByPage---- */
+	// else if ("listByPage".equals(cmd)) {
+	//
+	// PageControl pageControl = this.createPageControl(request);
+	//
+	// pageControl = cmd_listByPage(className, requestMap, pageControl);
+	// request.setAttribute("pageControl", pageControl);
+	// }
+	// if ("true".equals(referer))
+	// saveReferer(request);
+	//
+	// // 返回
+	// if (redirectURL != null)
+	// response.sendRedirect(redirectURL);
+	// else if (returnKey != null)
+	// return returnKey;
+	// else if (targetClass != null)
+	// return targetClass + "." + cmd;
+	//
+	// } catch (Exception e) {
+	// log.debug(e);
+	// throw new RuntimeException(e.getMessage());
+	// }
+	// return SUCCESS;
+	// }
 
 	/**
 	 * 清理requestMap中多余的值，同时转换request.getParameterMap中String[]
@@ -163,7 +168,10 @@ public class GeneralAction extends BaseAction {
 	protected String getClassName(String targetClass) throws Exception {
 		if (classNameMap == null)
 			throw new Exception("ClassNameMap is null");
-		return (String) classNameMap.get(targetClass);
+		log.debug(classNameMap);
+		log.debug(targetClass);
+		log.debug(classNameMap.get(targetClass));
+		return String.valueOf(classNameMap.get(targetClass));
 	}
 
 	/**
@@ -270,7 +278,7 @@ public class GeneralAction extends BaseAction {
 		PK_NAME = pK_NAME;
 	}
 
-	public void setClassNameMap(HashMap<?, ?> classNameMap) {
+	public void setClassNameMap(Map<String, String> classNameMap) {
 		// log.debug("classNameMap=" + classNameMap);
 		this.classNameMap = classNameMap;
 	}

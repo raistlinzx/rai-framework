@@ -1,22 +1,16 @@
 package com.rai.framework.web.struts.action.common;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.struts2.interceptor.ServletRequestAware;
-import org.apache.struts2.interceptor.ServletResponseAware;
 import org.displaytag.tags.TableTagParameters;
 import org.displaytag.util.ParamEncoder;
 
-import com.rai.framework.exception.FrameworkException;
-import com.rai.framework.exception.FrameworkRuntimeException;
 import com.rai.framework.utils.PageControl;
 
-public abstract class BaseAction implements ServletRequestAware,
-		ServletResponseAware {
+public abstract class BaseAction {
 
 	public final static String SUCCESS = "SUCCESS";
 	public final static String FAILURE = "FAILURE";
@@ -29,54 +23,56 @@ public abstract class BaseAction implements ServletRequestAware,
 
 	protected final Log logger = LogFactory.getLog(super.getClass());
 
-	public String execute() throws Exception {
-		String forwordName = FAILURE;
+	//
+	// public String execute() throws Exception {
+	// String forwordName = FAILURE;
+	//
+	// String errorCode = "00000";
+	//
+	// String log = "[00000] Top Exception in BaseAction";
+	// try {
+	// forwordName = actionExecute();
+	// } catch (FrameworkRuntimeException ex) {
+	// ex.printStackTrace();
+	// if (this.logger.isErrorEnabled()) {
+	// this.logger.error("[" + ex.getErrorCode() + "] " + log + ": ",
+	// ex);
+	// }
+	// request.setAttribute("ErrorMsg", ex.getErrorCode());
+	// } catch (FrameworkException ex) {
+	// ex.printStackTrace();
+	// if (this.logger.isErrorEnabled()) {
+	// this.logger.error("[" + ex.getErrorCode() + "] " + log + ": ",
+	// ex);
+	// }
+	// request.setAttribute("ErrorMsg", ex.getErrorCode());
+	// } catch (RuntimeException ex) {
+	// ex.printStackTrace();
+	// if (this.logger.isErrorEnabled()) {
+	// this.logger.error("[" + errorCode + "] " + log + ": ", ex);
+	// }
+	// request.setAttribute("ErrorMsg", errorCode);
+	// } catch (Exception ex) {
+	// ex.printStackTrace();
+	// if (this.logger.isErrorEnabled()) {
+	// this.logger.error("[" + errorCode + "] " + log + ": ", ex);
+	// }
+	// request.setAttribute("ErrorMsg", errorCode);
+	// }
+	//
+	// String referer = request.getParameter(REFERER);
+	//
+	// if (StringUtils.isNotBlank(referer))
+	// if ("true".equals(referer))
+	// saveReferer(request);
+	// else
+	// saveReferer(request, referer);
+	//
+	// return forwordName;
+	// }
 
-		String errorCode = "00000";
-
-		String log = "[00000] Top Exception in BaseAction";
-		try {
-			forwordName = actionExecute();
-		} catch (FrameworkRuntimeException ex) {
-			ex.printStackTrace();
-			if (this.logger.isErrorEnabled()) {
-				this.logger.error("[" + ex.getErrorCode() + "] " + log + ": ",
-						ex);
-			}
-			request.setAttribute("ErrorMsg", ex.getErrorCode());
-		} catch (FrameworkException ex) {
-			ex.printStackTrace();
-			if (this.logger.isErrorEnabled()) {
-				this.logger.error("[" + ex.getErrorCode() + "] " + log + ": ",
-						ex);
-			}
-			request.setAttribute("ErrorMsg", ex.getErrorCode());
-		} catch (RuntimeException ex) {
-			ex.printStackTrace();
-			if (this.logger.isErrorEnabled()) {
-				this.logger.error("[" + errorCode + "] " + log + ": ", ex);
-			}
-			request.setAttribute("ErrorMsg", errorCode);
-		} catch (Exception ex) {
-			ex.printStackTrace();
-			if (this.logger.isErrorEnabled()) {
-				this.logger.error("[" + errorCode + "] " + log + ": ", ex);
-			}
-			request.setAttribute("ErrorMsg", errorCode);
-		}
-
-		String referer = request.getParameter(REFERER);
-
-		if (StringUtils.isNotBlank(referer))
-			if ("true".equals(referer))
-				saveReferer(request);
-			else
-				saveReferer(request, referer);
-
-		return forwordName;
-	}
-
-	protected abstract String actionExecute() throws Exception;
+//	protected abstract String actionExecute(HttpServletRequest request,
+//			HttpServletResponse response) throws Exception;
 
 	protected void saveReferer(HttpServletRequest request) {
 		// request.getSession().setAttribute(REFERER,
@@ -170,18 +166,8 @@ public abstract class BaseAction implements ServletRequestAware,
 		}
 		return new PageControl(request, pageIndex, pageSize);
 	}
-
-	protected HttpServletRequest request;
-	protected HttpServletResponse response;
-
-	@Override
-	public void setServletRequest(HttpServletRequest request) {
-		this.request = request;
-	}
-
-	@Override
-	public void setServletResponse(HttpServletResponse response) {
-		this.response = response;
-	}
+	//
+	// protected HttpServletRequest request;
+	// protected HttpServletResponse response;
 
 }

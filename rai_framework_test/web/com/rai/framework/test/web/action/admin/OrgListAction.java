@@ -1,8 +1,11 @@
 package com.rai.framework.test.web.action.admin;
 
-import java.util.List;
+import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang.StringUtils;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.rai.framework.model.common.ConditionModel;
 import com.rai.framework.model.common.QueryModel;
@@ -42,12 +45,13 @@ import com.rai.framework.web.struts.action.common.GeneralAction;
  * 
  * </pre>
  */
+@Controller
 public class OrgListAction extends GeneralAction {
 
-	@Override
-	protected String actionExecute() throws Exception {
+	@RequestMapping(value = "/admin/orgList")
+	public String actionExecute(HttpServletRequest request, Model model)
+			throws Exception {
 
-		// 获取参数
 		String parentId = request.getParameter("parentId");
 
 		// 生成查询条件queryModel
@@ -61,22 +65,23 @@ public class OrgListAction extends GeneralAction {
 		PageControl pageControl = this.createPageControl(request);
 		this.generalManager.find(queryModel, pageControl);
 
-		request.setAttribute("pageControl", pageControl);
+		model.addAttribute("pageControl", pageControl);
 
 		if (StringUtils.isNotBlank(parentId)) {
-			request.setAttribute("parentOrg", this.generalManager.get(
+			model.addAttribute("parentOrg", this.generalManager.get(
 					Organization.class, parentId));
 		}
+//
+//		queryModel.setSelect("sum(alias.idx)");
+//		// queryModel.add(ConditionModel.isNotNull("persons.age"));
+//		// queryModel.setGroupby("parentOrg.id");
+//
+//		List list = this.generalManager.find(queryModel);
+//
+//		model.addAttribute("list", list);
 
-		queryModel.setSelect("sum(alias.idx)");
-		// queryModel.add(ConditionModel.isNotNull("persons.age"));
-		// queryModel.setGroupby("parentOrg.id");
-
-		List list = this.generalManager.find(queryModel);
-
-		request.setAttribute("list", list);
-
-		return SUCCESS;
+		saveReferer(request);
+		return "/admin/orgList";
 	}
 
 }

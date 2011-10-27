@@ -2,7 +2,12 @@ package com.rai.framework.test.web.action.admin;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.commons.lang.StringUtils;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.rai.framework.model.common.QueryModel;
 import com.rai.framework.test.model.Organization;
@@ -10,10 +15,11 @@ import com.rai.framework.test.model.Person;
 import com.rai.framework.test.model.PersonMoveLog;
 import com.rai.framework.web.struts.action.common.GeneralAction;
 
+@Controller
 public class PersonMoveLogAction extends GeneralAction {
 
-	@Override
-	protected String actionExecute() throws Exception {
+	@RequestMapping(value="/admin/personMoveLog")
+	public String actionExecute(HttpServletRequest request,Model model) throws Exception {
 
 		String id = request.getParameter("id");
 		PersonMoveLog personMoveLog = null;
@@ -37,7 +43,7 @@ public class PersonMoveLogAction extends GeneralAction {
 		request.setAttribute("orgList", orgList);
 		request.setAttribute("personList", personList);
 
-		return SUCCESS;
+		return "admin/personMovLog";
 	}
 
 }

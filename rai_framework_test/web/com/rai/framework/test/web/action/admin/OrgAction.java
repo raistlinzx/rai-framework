@@ -1,14 +1,20 @@
 package com.rai.framework.test.web.action.admin;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.commons.lang.StringUtils;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.rai.framework.test.model.Organization;
 import com.rai.framework.web.struts.action.common.GeneralAction;
 
+@Controller
 public class OrgAction extends GeneralAction {
 
-	@Override
-	protected String actionExecute() throws Exception {
+	@RequestMapping(value="/admin/org")
+	public String actionExecute(HttpServletRequest request,Model model) throws Exception {
 
 		String id = request.getParameter("id");
 		String parentId = request.getParameter("parentId");
@@ -28,7 +34,7 @@ public class OrgAction extends GeneralAction {
 
 		// 保存前一访问连接
 		saveReferer(request);
-		return SUCCESS;
+		return "admin/org";
 	}
 
 }

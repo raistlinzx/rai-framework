@@ -135,6 +135,7 @@ public class POJOUtils {
 		try {
 			// 先对map进行reValue操作，将对应value转换为目前类型
 			// 并进行嵌套生成嵌套类对象。
+			log.debug("--[requestMap2Pojo]-- className=" + className);
 			log.debug("--[requestMap2Pojo]-- requestMap=" + requestMap);
 			map = requestMapRevalue(Class.forName(className), requestMap, true);
 			log.debug("--[requestMap2Pojo]-- map=" + map);
