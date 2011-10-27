@@ -33,8 +33,13 @@ public class Factory {
 		datatype = loadPropertiesFile(DATATYPE_FILE_PATH);
 
 		String target = config.getProperty("target");
-		log.info("Target Database:"+target);
 		String hbmBuild = config.getProperty("hbmfile.build");
+		String filepath = config.getProperty("output.filepath");
+		String packageName = config.getProperty("class.package_name");
+		String templateClassPath = config.getProperty("template.class.path");
+		String templateHbmPath = config.getProperty("template.hbm.path");
+
+		log.info("Target Database:" + target);
 
 		DatabaseUtil databaseUtil = null;
 		ClassGenerator classGenerator = new DefaultClassGenerator();
@@ -42,10 +47,9 @@ public class Factory {
 		if ("mysql".equals(target.toLowerCase())) {
 			// mysql
 			databaseUtil = new MySQLDatabaseUtil(config);
-		}
-		else if ("oracle".equals(target.toLowerCase())){
-			//oracle
-			databaseUtil=new OracleDatabaseUtil(config);
+		} else if ("oracle".equals(target.toLowerCase())) {
+			// oracle
+			databaseUtil = new OracleDatabaseUtil(config);
 		}
 
 		List<TableMap> tableMaps = databaseUtil.loadAllTables();
@@ -62,18 +66,20 @@ public class Factory {
 			setForeignColumn(tableMaps, foreign);
 		}
 
+		// Prepare for Output DIR
+		File dir = new File(filepath);
+		if (!dir.exists())
+			dir.mkdirs();
+
 		for (TableMap table : tableMaps) {
-			String filepath = config.getProperty("output.filepath");
-			File dir = new File(filepath);
-			if (!dir.exists())
-				dir.mkdirs();
 			// class file
 			File classFile = new File(filepath + "/" + table.getClassName()
 					+ ".java");
 			OutputStream classFileOS = new FileOutputStream(classFile);
-			classGenerator.generateClassFile(classFileOS, table, config
-					.getProperty("template.class.path"), config
-					.getProperty("class.package_name"), target, datatype);
+
+			classGenerator.generateClassFile(classFileOS, table,
+					templateClassPath, packageName, target, datatype);
+
 			classFileOS.close();
 
 			if ("true".equals(hbmBuild)) {
@@ -81,9 +87,8 @@ public class Factory {
 				File hbmFile = new File(filepath + "/" + table.getClassName()
 						+ ".hbm.xml");
 				OutputStream hbmFileOS = new FileOutputStream(hbmFile);
-				hbmGenerator.generateFile(hbmFileOS, table, config
-						.getProperty("template.hbm.path"), config
-						.getProperty("class.package_name"));
+				hbmGenerator.generateFile(hbmFileOS, table, templateHbmPath,
+						packageName);
 
 				hbmFileOS.close();
 			}
