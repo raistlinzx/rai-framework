@@ -23,8 +23,8 @@ public class DefaultClassGenerator implements ClassGenerator {
 		classText = classText.replaceAll("#PACKAGE_NAME#", packageName);
 
 		// class_name
-		classText = classText.replaceAll("#CLASS_NAME#", packageName + "."
-				+ tableMap.getClassName());
+		classText = classText.replaceAll("#CLASS_NAME#", tableMap
+				.getClassName());
 
 		// nowdate
 		classText = classText.replaceAll("#NOWDATE#", new SimpleDateFormat(
